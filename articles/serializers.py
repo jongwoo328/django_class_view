@@ -6,8 +6,11 @@ class ArticleListSerializer(serializers.ListSerializer):
     pass
 
 
-class ArticleSerializer(serializers.Serializer):
+class ArticleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
-        fields = '__all__'
+        fields = (
+            'title',
+            'content'
+        )
         list_serializer_class = ArticleListSerializer
