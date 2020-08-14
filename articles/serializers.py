@@ -10,7 +10,6 @@ class ArticleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
         fields = (
-            'title',
-            'content'
+            'content',
         )
         list_serializer_class = ArticleListSerializer
