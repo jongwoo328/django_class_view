@@ -2,9 +2,6 @@ from rest_framework import serializers
 
 from .models import Article
 
-class ArticleListSerializer(serializers.ListSerializer):
-    pass
-
 
 class ArticleSerializer(serializers.ModelSerializer):
     class Meta:
@@ -12,4 +9,7 @@ class ArticleSerializer(serializers.ModelSerializer):
         fields = (
             'content',
         )
-        list_serializer_class = ArticleListSerializer
+        examples = {
+            'content': 'This is content.'
+        }
+    
