@@ -40,8 +40,10 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'drf_yasg',
+    'django_extensions',
 
     'articles.apps.ArticlesConfig',
+    'accounts.apps.AccountsConfig'
 ]
 
 MIDDLEWARE = [
@@ -127,3 +129,5 @@ USE_L10N = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+AUTH_USER_MODEL = 'accounts.CustomUser'
