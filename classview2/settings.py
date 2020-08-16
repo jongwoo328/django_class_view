@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'django_extensions',
 
     'articles.apps.ArticlesConfig',
-    'accounts.apps.AccountsConfig'
+    'accounts.apps.AccountsConfig',
+    'images.apps.ImagesConfig'
 ]
 
 MIDDLEWARE = [
@@ -129,5 +130,8 @@ USE_L10N = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+MEDIA_URL = '/img/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'upload_images')
 
 AUTH_USER_MODEL = 'accounts.CustomUser'

@@ -24,4 +24,5 @@ urlpatterns = [
     path('swagger/', yasg_view.with_ui('swagger', cache_timeout=0)),
     path('api/articles/', include('articles.urls')),
     path('api/accounts/', include('accounts.urls')),
+    path('images/', include('images.urls')),
 ]
