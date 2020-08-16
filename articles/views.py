@@ -6,8 +6,8 @@ from rest_framework import status
 
 from drf_yasg.utils import swagger_auto_schema
 
-from .serializers import ArticleBasicSerializer, ArticleCreateSerializer
-from .models import Article
+from .serializers import ArticleBasicSerializer, ArticleCreateSerializer, CommentSerializer
+from .models import Article, Comment
 
 
 class ArticleList(APIView):
@@ -53,7 +53,7 @@ class ArticleDetail(APIView):
         article = self.get_object(article_id)
         serializer = ArticleCreateSerializer(instance=article, data=request.data)
         if serializer.is_valid():
-            serializer.save(author=request.user)
+            serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
@@ -61,4 +61,37 @@ class ArticleDetail(APIView):
     def delete(self, request, article_id, format=None):
         article = self.get_object(article_id)
         article.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class CommentCreate(APIView):
+    @swagger_auto_schema(request_body=CommentSerializer, responses={201: 'Created', 400: 'Bad request', 500: 'Internal server error'})
+    def post(self, request, article_id, format=None):
+        serializer = CommentSerializer(data=request.data)
+        if serializer.is_valid():
+            comment = serializer.save(
+                author=request.user,
+                article=get_object_or_404(Article, pk=article_id)
+            )
+            return Response(CommentSerializer(comment).data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CommentDetail(APIView):
+    def get_object(self, comment_id):
+        return get_object_or_404(Comment, pk=comment_id)
+
+    @swagger_auto_schema(request_body=CommentSerializer, responses={200: 'OK', 400: 'Bad request', 500: 'Internal server error'})
+    def put(self, request, article_id, comment_id, format=None):
+        comment = self.get_object(comment_id)
+        serializer = CommentSerializer(instance=comment, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    @swagger_auto_schema(responses={204: 'Deleted', 400: 'Bad Request', 500: 'Internal server error'})
+    def delete(self, request, article_id, comment_id, format=None):
+        comment = self.get_object(comment_id)
+        comment.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
