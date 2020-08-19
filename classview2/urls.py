@@ -22,6 +22,9 @@ yasg_view = get_schema_view(
 )
 
 urlpatterns = [
+    path('auth/', include('rest_auth.urls')),
+    path('auth/signup/', include('rest_auth.registration.urls')),
+
     path('admin/', admin.site.urls),
     path('swagger/', yasg_view.with_ui('swagger', cache_timeout=0)),
     path('api/articles/', include('articles.urls')),

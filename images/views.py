@@ -21,12 +21,11 @@ class ImageView(APIView):
     @swagger_auto_schema(request_body=ImageUploadSerializer, responses={201: 'Created', 400: 'Bad request', 401: 'Unauthorized', 500: 'Internal server error'})
     def post(self, request, format=None):
         serializer = ImageUploadSerializer(data=request.FILES)
-        if serializer.is_valid():
+        if serializer.is_valid(raise_exception=True):
             serializer.save(
                 author=request.user,
             )
             return Response(status=status.HTTP_201_CREATED)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 class ImageDetail(APIView):
     
@@ -44,10 +43,9 @@ class ImageDetail(APIView):
     def put(self, request, image_id, format=None):
         image = self.get_object(image_id)
         serializer = ImageUploadSerializer(instance=image, data=request.FILES)
-        if serializer.is_valid():
+        if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     @swagger_auto_schema(responses={204: 'Deleted', 400: 'Bad request', 500: 'Internal server error'})
     def delete(self, request, image_id, format=None):

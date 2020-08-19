@@ -22,10 +22,9 @@ class UserList(APIView):
     @swagger_auto_schema(request_body=UserCreateSerializer, responses={201: 'Created', 400: 'Bad request', 500: 'Internal server error'})
     def post(self, request):
         serializer = UserCreateSerializer(data=request.data)
-        if serializer.is_valid():
+        if serializer.is_valid(raise_exception=True):
             user = serializer.create(request.data)
             return Response(UserBasicSerializer(instance=user).data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserDetail(APIView):
